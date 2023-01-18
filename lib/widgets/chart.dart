@@ -51,7 +51,6 @@ class Chart extends StatelessWidget {
      totalValue =  (data['amount'] as double) /  totalSpending;
 
           }
-print("totalValue: $totalValue");
           return ChartBar(
               (data['day'] as String),
               (data['amount'] as double),
