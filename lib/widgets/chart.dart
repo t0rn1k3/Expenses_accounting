@@ -55,7 +55,6 @@ class Chart extends StatelessWidget {
               (data['day'] as String),
               (data['amount'] as double),
               totalValue);
-             
         }).toList(),
       ),
     );
