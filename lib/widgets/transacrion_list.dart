@@ -5,8 +5,9 @@ import '../models/transactions.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
+  final Function deleteTx;
 
-  TransactionList(this.transactions);
+  TransactionList(this.transactions, this.deleteTx);
 
   @override
   Widget build(BuildContext context) {
@@ -25,23 +26,25 @@ class TransactionList extends StatelessWidget {
           : ListView(
               children: transactions.map((transaction) {
                 return Card(
-                  child: Row(children: [
-                    Container(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        '\$ ${transaction.amount}',
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColorDark,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Theme.of(context).primaryColorDark,
-                              width: 2)),
-                    ),
-                    Column(
+                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                    Row(
+                      children: [
+                        Container(
+                          margin:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                          padding: EdgeInsets.all(10),
+                          child: Text(
+                            '\$ ${transaction.amount}',
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColorDark,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Theme.of(context).primaryColorDark,
+                                  width: 2)),
+                        ),
+                           Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -53,9 +56,13 @@ class TransactionList extends StatelessWidget {
                           DateFormat.yMMMd()
                               .format(transaction.date as DateTime),
                           style: TextStyle(color: Colors.grey),
-                        )
+                        ),
                       ],
-                    )
+                    ),
+                      ],
+                    ),
+                 
+                    IconButton(onPressed: ()=>  deleteTx(transaction.id), icon: Icon(Icons.delete), color: Colors.red,),
                   ]),
                 );
               }).toList(),

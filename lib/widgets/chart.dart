@@ -18,18 +18,12 @@ class Chart extends StatelessWidget {
         if (recentTransactions[i].date!.day == weekDay.day &&
             recentTransactions[i].date!.month == weekDay.month &&
             recentTransactions[i].date!.year == weekDay.year) {
-          totalSum += recentTransactions[recentTransactions.length - 1].amount as double;
+          totalSum += recentTransactions[i].amount as double;
           // recentTransactions[i].amount as double;
         }
       }
-      double? lastValue= 0;
-      if(recentTransactions.isNotEmpty){
-     lastValue =   recentTransactions.last.amount;
-
-      }
-      print("lastValue : $lastValue");
-      return {'day': DateFormat.E().format(weekDay), 'amount': lastValue ?? 0};
-    });
+      return {'day': DateFormat.E().format(weekDay), 'amount': totalSum, };
+    }).reversed.toList();
   }
 
   double get totalSpending {
@@ -44,12 +38,11 @@ class Chart extends StatelessWidget {
       elevation: 5,
       margin: EdgeInsets.all(10),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: groupTransactionValues.map((data) {
            double totalValue = 0;
-           print("totalSpending");
           if(totalSpending != 0){
      totalValue =  (data['amount'] as double) /  totalSpending;
-
           }
           return ChartBar(
               (data['day'] as String),
