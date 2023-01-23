@@ -12,13 +12,12 @@ class TransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 350,
       child: transactions.isEmpty
           ? Center(
               child: Text(
                 'List of transactions is empty',
                 style: TextStyle(
-                    color: Colors.red,
+                    color: Colors.black,
                     fontSize: 25,
                     fontWeight: FontWeight.bold),
               ),

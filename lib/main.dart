@@ -6,7 +6,15 @@ import './models/transactions.dart';
 import './widgets/transacrion_list.dart';
 import './widgets/chart.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // SystemChrome.setPreferredOrientations([
+  //   DeviceOrientation.portraitUp,
+  //   DeviceOrientation.portraitDown
+  // ]
+  // );
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -35,6 +43,8 @@ class _HomePageState extends State<HomePage> {
     // Transaction(id: 'a1', title: 'books', amount: 12.60, date: DateTime.now()),
     // Transaction(id: 'a2', title: 'car', amount: 120.60, date: DateTime.now())
   ];
+
+  bool _showCart = false;
 
   List<Transaction> get _recentTransactions {
     return _userTransactions.where((transaction) {
@@ -74,21 +84,54 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    final isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
+    final appBar =  AppBar(
         title: Text('Acoounting Expenses'),
         actions: [
           IconButton(
               onPressed: () => startAddNewTransaction(context),
               icon: Icon(Icons.add))
         ],
-      ),
+      );
+    return Scaffold(
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            Chart(_recentTransactions),
-            TransactionList(_userTransactions, _deleteTransaction)
+            if(isLandScape) Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Show Chart'),
+                Switch(value: _showCart, onChanged: (val){
+                  setState(() {
+                  _showCart = val;
+                  });
+                })
+              ],
+            ),
+            if(!isLandScape) Container( 
+              height: (MediaQuery.of(context).size.height) * 0.3 - 
+                      appBar.preferredSize.height - 
+                      MediaQuery.of(context).padding.top, 
+              child: Chart(_recentTransactions),
+            ),
+            if(!isLandScape) Container(
+              height: (MediaQuery.of(context).size.height) * 0.7 - 
+                      appBar.preferredSize.height - 
+                      MediaQuery.of(context).padding.top, 
+              child: TransactionList(_userTransactions, _deleteTransaction)),
+            if(isLandScape)_showCart ? Container( 
+              height: (MediaQuery.of(context).size.height) * 0.7 - 
+                      appBar.preferredSize.height - 
+                      MediaQuery.of(context).padding.top, 
+              child: Chart(_recentTransactions),
+            ) :
+            Container(
+              height: (MediaQuery.of(context).size.height) * 0.7 - 
+                      appBar.preferredSize.height - 
+                      MediaQuery.of(context).padding.top, 
+              child: TransactionList(_userTransactions, _deleteTransaction))
           ],
         ),
       ),
